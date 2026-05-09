@@ -1,183 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Social Media Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>COCO Pet | Premium Pet Food & Accessories</title>
+    <!-- Google Fonts + Font Awesome + Tailwind -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefcf5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        :root {
+            --coco-orange: #f97c2c;
+            --coco-shadow: 0 20px 35px -12px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.02);
+        }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .navbar {
-        background-color: #ff8787;
-    }
-
-    /* Hero Section */
-    .hero {
-      background: linear-gradient(to right, #eef2f3, #dfe9f3);
-      padding: 80px 0;
-    }
-
-    .hero h1 {
-      font-weight: bold;
-      color: #2c3e50;
-    }
-
-    .hero p {
-      color: #555;
-    }
-
-    .hero img {
-      max-width: 100%;
-    }
-
-    /* Services */
-    .service-box {
-      padding: 20px;
-      border-radius: 10px;
-      background: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      transition: 0.3s;
-    }
-
-    .service-box:hover {
-      transform: translateY(-5px);
-    }
-
-    .service-box i {
-      font-size: 30px;
-      color: #ff6b00;
-      margin-bottom: 10px;
-    }
-
-    /* Contact */
-    .contact {
-      background: #f8f9fa;
-      padding: 60px 0;
-    }
-
-    /* WhatsApp Button */
-    .whatsapp {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #000000;
-      color: white;
-      font-size: 22px;
-      padding: 12px 16px;
-      border-radius: 60%;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      z-index: 1000;
-    }
-
-    .whatsapp:hover {
-      color: white;
-      background: #ff3434;
-    }
-  </style>
+        /* ========== ANIMATIONS ========== */
+        @keyframes floatPaw {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-18px) rotate(6deg); opacity: 1; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes gentlePulse {
+            0% { transform: scale(1); box-shadow: 0 8px 20px rgba(0,0,0,0.02); }
+            50% { transform: scale(1.02); box-shadow: 0 15px 30px rgba(249,115,22,0.15); }
+            100% { transform: scale(1); box-shadow: 0 8px 20px rgba(0,0,0,0.02); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .floating-paw {
+            animation: floatPaw 6s infinite ease-in-out;
+        }
+        .animate-fade-up {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0; /* initial hidden */
+        }
+        .animate-scale-in {
+            animation: scaleIn 0.4s ease forwards;
+        }
+        .hover-gentle-pulse:hover {
+            animation: gentlePulse 0.3s ease-in-out;
+        }
+        /* Loading spinner overlay (initial, then fade out) */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fefcf5;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ffedd5;
+            border-top: 5px solid #f97c2c;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Reveal classes for scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.7s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Card hover enhancements */
+        .product-card, .category-card, .testimonial-card, .feature-card, .accessory-card {
+            transition: all 0.3s cubic-bezier(0.2, 0.95, 0.4, 1.05);
+            will-change: transform;
+        }
+        .product-card:hover, .category-card:hover, .testimonial-card:hover, .accessory-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-orange {
+            background: linear-gradient(105deg, #f97316 0%, #ff8c42 100%);
+            box-shadow: 0 8px 18px rgba(249,115,22,0.2);
+            transition: all 0.25s ease;
+        }
+        .btn-orange:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 15px 25px -8px rgba(249,115,22,0.4);
+        }
+        .rating-star {
+            color: #fbbf24;
+        }
+        .price {
+            font-weight: 700;
+            color: #f97c2c;
+            font-size: 1.1rem;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1e9db;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f97c2c;
+            border-radius: 10px;
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 2rem;
+            color: #6b7280;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 245, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(249, 115, 22, 0.12);
+        }
+    </style>
 </head>
+<body class="antialiased">
 
-<body>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light  shadow-sm">
-  <div class="container ">
-    <a class="navbar-brand fw-bold" href="#">Konark</a>
-    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-      </ul>
+    <!-- LOADING ANIMATION -->
+    <div id="loader">
+        <div class="loader-spinner"></div>
     </div>
-  </div>
-</nav>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="container">
-    <div class="row align-items-center">
-
-      <div class="col-md-6">
-        <h1>Social Media Management</h1>
-        <p>Creating & Managing Your Social Media Presence</p>
-        <a href="#contact" class="btn btn-warning mt-3">Contact Us</a>
-      </div>
-
-      <div class="col-md-6 text-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="">
-      </div>
-
+    <!-- STICKY NAVBAR -->
+    <div class="fixed top-0 left-0 w-full z-50 glass-nav shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-paw text-3xl text-[#f97c2c] floating-paw" style="animation-duration: 3s;"></i>
+                <span class="text-2xl font-extrabold tracking-tight text-[#2c2c2c]">COCO<span class="text-[#f97c2c]">Pet</span></span>
+            </div>
+            <div class="hidden md:flex gap-7 font-medium text-gray-700">
+                <a href="#" class="hover:text-[#f97c2c] transition duration-300">Home</a>
+                <a href="#products" class="hover:text-[#f97c2c] transition duration-300">Food</a>
+                <a href="#accessories" class="hover:text-[#f97c2c] transition duration-300">Accessories</a>
+                <a href="#contact" class="hover:text-[#f97c2c] transition duration-300">Contact</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <i class="fa-regular fa-heart text-xl text-gray-600 cursor-pointer hover:text-[#f97c2c] transition duration-300 hover:scale-110" id="wishlistIcon"></i>
+            </div>
+        </div>
     </div>
-  </div>
-</section>
 
-<!-- Services -->
-<section id="services" class="py-5">
-  <div class="container text-center">
-    <h2 class="mb-4">Our Services</h2>
-
-    <div class="row g-4">
-      <div class="col-md-3" >
-        <div class="service-box" style="background: linear-gradient(45deg, #ffd45d, #ff8787);">
-          <i class="fas fa-pen"></i>
-          <h5>Content Creation</h5>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="service-box" style="background: linear-gradient(45deg, #ffd45d, #ff8787);">
-          <i class="fas fa-share-alt"></i>
-          <h5>Social Media Management</h5>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="service-box" style="background: linear-gradient(45deg, #ffd45d, #ff8787);">
-          <i class="fas fa-chart-line"></i>
-          <h5>Analytics & Reporting</h5>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="service-box" style="background: linear-gradient(45deg, #ffd45d, #ff8787);">
-          <i class="fas fa-bullhorn"></i>
-          <h5>Ad Campaigns</h5>
-        </div>
-      </div>
+    <!-- Floating WhatsApp Button with pulse animation -->
+    <div class="fixed bottom-8 right-6 z-50 bg-green-500 w-14 h-14 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition duration-300 hover:scale-110 hover:shadow-green-300/50" id="whatsappBtn" style="animation: gentlePulse 2s infinite;">
+        <i class="fab fa-whatsapp text-white text-3xl"></i>
     </div>
-  </div>
-</section>
 
-<!-- Contact -->
-<section id="contact" class="contact"  style="background: linear-gradient(to right, #eef2f3, #dfe9f3);" >
-  <div class="container text-center">
-    <h2>Contact Us</h2>
-    <p>📞 +91 95556 86717</p>
-    <p>📍 Lucknow, India</p>
+    <main class="pt-20 overflow-x-hidden">
+        <!-- ========== HERO SECTION ========== -->
+        <section class="relative max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-16 reveal">
+            <div class="absolute -top-12 -left-8 opacity-30 floating-paw"><i class="fas fa-paw text-7xl text-[#f97c2c]"></i></div>
+            <div class="absolute bottom-10 right-10 floating-paw opacity-20" style="animation-delay: 1.5s;"><i class="fas fa-paw text-6xl text-[#f97c2c]"></i></div>
+            <div class="absolute right-4 top-10 hidden lg:block opacity-70 floating-paw" style="animation-duration: 5s;">
+                <div class="relative"><i class="fas fa-motorcycle text-6xl text-[#f97c2c] drop-shadow-lg"></i><div class="absolute -bottom-2 -right-5 bg-white rounded-full p-1 shadow"><i class="fas fa-box-open text-[#2c2c2c] text-lg"></i></div></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 animate-fade-up" style="animation-delay: 0.1s;">
+                    <div class="bg-[#ffedd5] inline-block px-4 py-1 rounded-full text-[#f97c2c] font-semibold text-sm"><i class="fas fa-star-of-life text-xs"></i> Premium Pet Nutrition & Style</div>
+                    <h1 class="text-5xl md:text-6xl font-black leading-tight text-[#2c2c2c]">Your Premium <span class="text-[#f97c2c]">Pet Food &</span> Accessories</h1>
+                    <p class="text-gray-600 text-lg">Luxurious e‑commerce for happy pets — finest quality food, toys, beds & more.</p>
+                    <div class="relative max-w-md">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="globalSearch" placeholder="Search for dog food, grain-free, cat bed, toys..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f97c2c] transition-all">
+                    </div>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button class="btn-orange px-8 py-3 rounded-full text-white font-bold shadow-lg" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now <i class="fas fa-arrow-right ml-2"></i></button>
+                        <button class="border-2 border-[#f97c2c] text-[#f97c2c] bg-white px-8 py-3 rounded-full font-bold hover:bg-[#f97c2c] hover:text-white transition duration-300" onclick="document.getElementById('accessories').scrollIntoView({behavior:'smooth'})">Explore Accessories <i class="fas fa-gift ml-2"></i></button>
+                    </div>
+                </div>
+                <div class="relative grid grid-cols-2 gap-4 animate-scale-in" style="animation-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&h=300&fit=crop" class="rounded-3xl shadow-xl object-cover w-full h-64 hover:scale-105 transition duration-500" alt="happy dog">
+                    <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=300&h=300&fit=crop" class="rounded-3xl shadow-xl object-cover w-full h-64 mt-8 hover:scale-105 transition duration-500" alt="happy cat">
+                </div>
+            </div>
+        </section>
 
-    <a href="tel:+919555686717" class="btn btn-primary">Call Now</a>
-  </div>
-</section>
+        <!-- ========== CATEGORIES ========== -->
+        <section class="max-w-7xl mx-auto px-5 py-12 reveal">
+            <div class="text-center mb-10"><h2 class="text-3xl font-bold">Shop by <span class="text-[#f97c2c]">Category</span></h2><div class="w-20 h-1 bg-[#f97c2c] mx-auto mt-2 rounded-full animate-pulse"></div></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                <div class="category-card p-8 text-center hover:bg-orange-50 flex flex-col items-center gap-3 transition-all duration-300">
+                    <i class="fas fa-bowl-food text-5xl text-[#f97c2c] transition-all hover:scale-110"></i>
+                    <h3 class="text-2xl font-bold">Pet Food</h3>
+                    <p class="text-gray-500">Premium nutritious recipes for dogs, cats, birds, fish & small pets.</p>
+                    <span class="text-sm bg-gray-100 px-4 py-1 rounded-full">30+ varieties</span>
+                </div>
+                <div class="category-card p-8 text-center hover:bg-orange-50 flex flex-col items-center gap-3 transition-all duration-300">
+                    <i class="fas fa-paw text-5xl text-[#f97c2c] transition-all hover:scale-110"></i>
+                    <h3 class="text-2xl font-bold">Accessories</h3>
+                    <p class="text-gray-500">Toys, beds, leashes, bowls, grooming & travel gear.</p>
+                    <span class="text-sm bg-gray-100 px-4 py-1 rounded-full">New arrivals</span>
+                </div>
+            </div>
+        </section>
 
-<!-- WhatsApp Button -->
-<a href="https://wa.me/919555686717" class="whatsapp" target="_blank">
-  <i class="fab fa-whatsapp"></i>
-</a>
+        <!-- ========== PET FOOD PRODUCTS (many options) ========== -->
+        <section id="products" class="max-w-7xl mx-auto px-5 py-12 reveal">
+            <div class="flex justify-between items-center flex-wrap mb-6"><h2 class="text-3xl font-bold">Premium <span class="text-[#f97c2c]">Pet Food</span></h2><p class="text-gray-400">★ 10,000+ happy pets</p></div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" id="productGrid">
+                <!-- 12 product items with data-name -->
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Dog Food (Chicken & Rice)"><img src="https://images.unsplash.com/photo-1568009114765-3fda1e884a7f?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><div class="flex justify-between"><h3 class="font-bold text-sm">Dog Food (Chicken)</h3><i class="far fa-heart text-gray-400 wishlist-icon hover:text-red-400 cursor-pointer"></i></div><div class="flex gap-1 text-xs"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i></div><div class="mt-2"><span class="price">$15.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Cat Food (Salmon)"><img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Cat Food (Salmon)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$14.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Puppy Food (Lamb)"><img src="https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Puppy Food (Lamb)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$18.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Bird Food (Tropical Mix)"><img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Bird Food (Tropical)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$9.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Fish Food (Color Enhancer)"><img src="https://images.unsplash.com/photo-1524704654690-b56c05c78e5a?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Fish Food (Color+)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$7.49</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Grain-Free Dog Food"><img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Grain-Free Dog Food</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$21.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Senior Cat Food"><img src="https://images.unsplash.com/photo-1582691874102-182e197c9f4c?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Senior Cat Food</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i></div><div class="mt-2"><span class="price">$17.49</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Small Breed Dog Food"><img src="https://images.unsplash.com/photo-1567604758666-878b226c9a34?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Small Breed Kibble</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$19.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Rabbit Food (Fortified)"><img src="https://images.unsplash.com/photo-1535241749838-299277b6305f?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Rabbit Food (Fortified)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$8.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Hamster & Gerbil Food"><img src="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Hamster Food Mix</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$5.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Reptile Food (Crickets)"><img src="https://images.unsplash.com/photo-1558844284-351a3fcb7c56?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Reptile Food (Crickets)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$12.99</span></div></div></div>
+                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Wet Cat Food (Tuna)"><img src="https://images.unsplash.com/photo-1562690868-60bbe7293e94?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Wet Cat Food (Tuna)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$2.49 (can)</span></div></div></div>
+            </div>
+        </section>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+ 
