@@ -1,262 +1,652 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>COCO Pet | Premium Pet Food & Accessories</title>
-    <!-- Google Fonts + Font Awesome + Tailwind -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fefcf5;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-        :root {
-            --coco-orange: #f97c2c;
-            --coco-shadow: 0 20px 35px -12px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.02);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Rowdy Cafe | Order Online</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* ========== ANIMATIONS ========== */
-        @keyframes floatPaw {
-            0% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
-            50% { transform: translateY(-18px) rotate(6deg); opacity: 1; }
-            100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes gentlePulse {
-            0% { transform: scale(1); box-shadow: 0 8px 20px rgba(0,0,0,0.02); }
-            50% { transform: scale(1.02); box-shadow: 0 15px 30px rgba(249,115,22,0.15); }
-            100% { transform: scale(1); box-shadow: 0 8px 20px rgba(0,0,0,0.02); }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        .floating-paw {
-            animation: floatPaw 6s infinite ease-in-out;
-        }
-        .animate-fade-up {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0; /* initial hidden */
-        }
-        .animate-scale-in {
-            animation: scaleIn 0.4s ease forwards;
-        }
-        .hover-gentle-pulse:hover {
-            animation: gentlePulse 0.3s ease-in-out;
-        }
-        /* Loading spinner overlay (initial, then fade out) */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fefcf5;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #ffedd5;
-            border-top: 5px solid #f97c2c;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        /* Reveal classes for scroll animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.7s ease;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* Card hover enhancements */
-        .product-card, .category-card, .testimonial-card, .feature-card, .accessory-card {
-            transition: all 0.3s cubic-bezier(0.2, 0.95, 0.4, 1.05);
-            will-change: transform;
-        }
-        .product-card:hover, .category-card:hover, .testimonial-card:hover, .accessory-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
-        }
-        .btn-orange {
-            background: linear-gradient(105deg, #f97316 0%, #ff8c42 100%);
-            box-shadow: 0 8px 18px rgba(249,115,22,0.2);
-            transition: all 0.25s ease;
-        }
-        .btn-orange:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 15px 25px -8px rgba(249,115,22,0.4);
-        }
-        .rating-star {
-            color: #fbbf24;
-        }
-        .price {
-            font-weight: 700;
-            color: #f97c2c;
-            font-size: 1.1rem;
-        }
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1e9db;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #f97c2c;
-            border-radius: 10px;
-        }
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: 2rem;
-            color: #6b7280;
-        }
-        .glass-nav {
-            background: rgba(255, 255, 245, 0.92);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(249, 115, 22, 0.12);
-        }
-    </style>
+    body {
+      background-color: #0b0b0b;
+      background-image: radial-gradient(circle at 10% 20%, rgba(180, 40, 40, 0.08) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Montserrat', sans-serif;
+      color: #f0f0f0;
+      scroll-behavior: smooth;
+    }
+
+    .menu-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #0a0a0aee;
+      box-shadow: 0 0 0 2px #B22222, 0 20px 35px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .logo-header {
+      background: #000000aa;
+      backdrop-filter: blur(4px);
+      border-bottom: 2px solid #B22222;
+      padding: 1.2rem 0;
+      text-align: center;
+    }
+    .logo-center { display: inline-block; text-align: center; }
+    /* =====================================================
+       👇 CHANGE YOUR LOGO HERE (replace the src URL)
+       ===================================================== */
+    .logo-img {
+      max-width: 160px;
+      height: auto;
+      filter: drop-shadow(0 4px 6px #000);
+      transition: transform 0.2s;
+    }
+    .logo-img:hover { transform: scale(1.02); }
+    .subhead { color: #aaa; font-size: 0.75rem; letter-spacing: 1px; margin-top: 6px; }
+
+    .action-bar {
+      background: #0a0a0acc;
+      backdrop-filter: blur(10px);
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid #B22222;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 100;
+    }
+    .action-btn {
+      background: #B22222;
+      border: none;
+      color: white;
+      border-radius: 40px;
+      padding: 0.5rem 1.8rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .action-btn:hover { background: #8b1a1a; transform: translateY(-2px); }
+
+    .category-card {
+      background: #0f0f0fdd;
+      border: 1px solid #2c2c2c;
+      border-radius: 24px;
+      margin-bottom: 2.2rem;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      scroll-margin-top: 100px;
+    }
+    .cat-head {
+      background: linear-gradient(90deg, #1e1e1e, #020202);
+      padding: 0.9rem 1.5rem;
+      border-left: 6px solid #B22222;
+      border-bottom: 1px solid #B22222;
+      font-weight: 800;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #E6B422;
+      font-family: 'Bebas Neue', 'Impact', cursive;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cat-head:hover { background: linear-gradient(90deg, #2a2a2a, #0f0f0f); }
+    .toggle-icon { font-size: 1.3rem; color: #E6B422; transition: transform 0.2s; }
+    .cat-body { display: flex; flex-wrap: wrap; padding: 1.2rem; gap: 1.5rem; }
+    .category-card.collapsed .cat-body { display: none; }
+    .category-card.collapsed .toggle-icon { transform: rotate(180deg); }
+
+    .cat-img-place { flex: 0 0 180px; }
+    .cat-img-place img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid #B22222;
+      box-shadow: 0 8px 14px black;
+      transition: 0.2s;
+    }
+    .menu-list { flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
+    .menu-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px dashed rgba(182, 34, 34, 0.4);
+      padding-bottom: 6px;
+      gap: 8px;
+    }
+    .item-info { flex: 1; }
+    .item-name { font-weight: 700; font-size: 1rem; color: #fff; }
+    .item-price { font-weight: 700; color: #fff; background: #B22222aa; padding: 0.15rem 0.8rem; border-radius: 40px; font-size: 0.85rem; white-space: nowrap; }
+    .add-btn {
+      background: #B22222;
+      border: none;
+      color: white;
+      border-radius: 30px;
+      padding: 0.3rem 1rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .add-btn:hover { background: #ff4d4d; transform: scale(1.02); }
+
+    .order-summary {
+      background: #0a0a0af2;
+      backdrop-filter: blur(8px);
+      border-top: 2px solid #B22222;
+      border-bottom: 2px solid #B22222;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      bottom: 0;
+      z-index: 99;
+    }
+    .summary-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.8rem;
+    }
+    .order-list {
+      max-height: 200px;
+      overflow-y: auto;
+      background: #111;
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.85rem;
+    }
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+      border-bottom: 1px dashed #B22222;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .order-item-details {
+      flex: 2;
+      color: #e0b85b;
+      font-size: 0.85rem;
+    }
+    .order-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .qty-btn {
+      background: #2a2a2a;
+      border: none;
+      color: #E6B422;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: bold;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .qty-btn:hover { background: #B22222; color: white; transform: scale(1.05); }
+    .item-quantity {
+      background: #1a1a1a;
+      padding: 0.1rem 0.6rem;
+      border-radius: 20px;
+      font-weight: 600;
+      min-width: 40px;
+      text-align: center;
+    }
+    .total-amount {
+      font-size: 1.4rem;
+      font-weight: 800;
+      font-family: 'Bebas Neue', cursive;
+      color: #E6B422;
+      background: #1a1a1a;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+    }
+    .whatsapp-btn {
+      background: #25D366;
+      color: #000;
+      font-weight: bold;
+      padding: 0.6rem 1.6rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .whatsapp-btn:hover { background: #20b859; transform: scale(1.02); color: white; }
+
+    @media (max-width: 768px) {
+      .cat-body { flex-direction: column; }
+      .cat-img-place { text-align: center; flex: 0 0 auto; }
+      .cat-img-place img { width: 160px; height: 160px; }
+      .cat-head { font-size: 1.4rem; }
+      .order-item { flex-direction: column; align-items: flex-start; }
+      .order-item-controls { align-self: flex-end; }
+    }
+
+    .footer-dark {
+      background: #030303f2;
+      border-top: 2px solid #B22222;
+      padding: 2rem 1rem;
+      font-size: 0.8rem;
+    }
+    hr { background-color: #B22222; opacity: 0.3; }
+
+    /* modal dark theme */
+    .modal-content {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      border: 1px solid #B22222;
+    }
+    .modal-header { border-bottom: 1px solid #B22222; }
+    .modal-footer { border-top: 1px solid #B22222; }
+    .btn-close { filter: invert(1); }
+    .form-select {
+      background-color: #2a2a2a;
+      color: #fff;
+      border-color: #B22222;
+    }
+    .form-select:focus {
+      border-color: #E6B422;
+      box-shadow: 0 0 0 0.2rem rgba(230, 180, 34, 0.25);
+    }
+    .btn-primary {
+      background-color: #B22222;
+      border-color: #B22222;
+    }
+    .btn-primary:hover { background-color: #8b1a1a; border-color: #8b1a1a; }
+  </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- LOADING ANIMATION -->
-    <div id="loader">
-        <div class="loader-spinner"></div>
+<div class="menu-container">
+  <div class="logo-header">
+    <div class="logo-center">
+      <!-- ======================================================= -->
+      <!-- TO CHANGE THE LOGO: Replace the src attribute below with -->
+      <!-- your own image URL (PNG, JPG, SVG, WebP).               -->
+      <!-- ======================================================= -->
+      <img class="logo-img" src="https://placehold.co/400x120?text=ROWDY+CAFE&font=montserrat" alt="Rowdy Cafe Logo" style="background:#1a1a1a; border-radius:40px; padding:0.5rem 1.5rem;">
+      <div class="subhead">Food That Feeds The Soul | Since 2020</div>
     </div>
+  </div>
 
-    <!-- STICKY NAVBAR -->
-    <div class="fixed top-0 left-0 w-full z-50 glass-nav shadow-sm">
-        <div class="max-w-7xl mx-auto px-5 py-3 flex flex-wrap justify-between items-center gap-3">
-            <div class="flex items-center gap-2">
-                <i class="fas fa-paw text-3xl text-[#f97c2c] floating-paw" style="animation-duration: 3s;"></i>
-                <span class="text-2xl font-extrabold tracking-tight text-[#2c2c2c]">COCO<span class="text-[#f97c2c]">Pet</span></span>
+  <div class="action-bar">
+    <button class="action-btn" id="collapseAllBtn"><i class="fas fa-compress-alt"></i> Collapse All</button>
+  </div>
+
+  <div class="p-3 p-md-4" id="fullMenuContainer"></div>
+
+  <div class="order-summary">
+    <div class="summary-header">
+      <h5 class="text-warning"><i class="fas fa-shopping-cart"></i> Your Order</h5>
+      <div class="total-amount" id="totalAmount">₹0</div>
+    </div>
+    <div id="orderList" class="order-list"><div class="text-muted">No items added yet</div></div>
+    <div class="d-flex justify-content-end">
+      <button id="whatsappOrderBtn" class="whatsapp-btn"><i class="fab fa-whatsapp fa-lg"></i> Order via WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="footer-dark">
+    <div class="row justify-content-between align-items-center g-4">
+      <div class="col-md-6">
+        <h5 class="text-danger fw-bold">!!! REACH OUT TO US !!!</h5>
+        <p class="small mb-1"><i class="fas fa-map-marker-alt text-danger me-2"></i> HEAD OFFICE: PLOT NO, A144/6, KOPARKHAIRNE ROAD, TTC INDUSTRIAL AREA, MIDC INDUSTRIAL AREA, PAWNE, NAVI MUMBAI, MAHARASHTRA-400710</p>
+        <p class="small"><i class="fas fa-building text-danger me-2"></i> NORTH INDIA OFFICE: 922-B, HEMKUNT CHAMBERS, 89-NEHRU PLACE, NEW DELHI-110019</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p><i class="fas fa-phone-alt text-danger me-2"></i> +91-6388775050</p>
+        <p><i class="fas fa-globe text-danger me-2"></i> WWW.ROWDYCAFE.COM</p>
+        <p class="text-warning small">📍 ROWDY CAFE | 📍 ROWDY CAFE</p>
+      </div>
+    </div>
+    <hr>
+    <div class="text-center mt-2 small text-secondary">Momos Are A Beloved Tibet & Nepali Cuisine Staple — Bold Flavors, Rowdy Vibe. © 2025 Rowdy Cafe</div>
+  </div>
+</div>
+
+<!-- Modal for table number -->
+<div class="modal fade" id="tableModal" tabindex="-1" aria-labelledby="tableModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-warning" id="tableModalLabel"><i class="fas fa-chair"></i> Select Table Number</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">Please choose your table number before placing the order.</p>
+        <select id="tableNumberSelect" class="form-select">
+          <option value="" disabled selected>-- Select Table (1-10) --</option>
+          <option value="1">Table 1</option><option value="2">Table 2</option><option value="3">Table 3</option>
+          <option value="4">Table 4</option><option value="5">Table 5</option><option value="6">Table 6</option>
+          <option value="7">Table 7</option><option value="8">Table 8</option><option value="9">Table 9</option>
+          <option value="10">Table 10</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="confirmOrderBtn" class="btn btn-primary">Proceed to WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ---------- COMPLETE MENU DATA (exact original items & prices) ----------
+  const menuData = [
+    { name: "SWEET LASSI", img: "Lassi.png", items: [
+      { name: "Mango Lassi", price: 80 }, { name: "Orange Lassi", price: 80 }, { name: "Strawberry Lassi", price: 80 },
+      { name: "Rose Lassi", price: 80 }, { name: "Butterscotch Lassi", price: 80 }, { name: "Kesar Pista Lassi", price: 80 }
+    ]},
+    { name: "REFRESHER", img: "Refresher.png", items: [
+      { name: "Nimbu Pani", price: 30 }, { name: "Nimbu Soda Masala", price: 30 }, { name: "Nariyal Pani", price: 40 }
+    ]},
+    { name: "MOJITOS", img: "Refresher.png", items: [
+      { name: "Mango Mojito", price: 79 }, { name: "Classic Virgin Mojito", price: 89 },
+      { name: "Blue Lagoon Mojito", price: 89 }, { name: "Blueberry Mojito", price: 89 }
+    ]},
+    { name: "DESSERT SHAKE", img: "dessert shake.png", items: [
+      { name: "Oreo Shake", price: 99 }, { name: "Kit Kat Shake", price: 139 }, { name: "Butterscotch Shake", price: 89 },
+      { name: "Banana Shake", price: 89 }, { name: "Strawberry Shake", price: 99 }, { name: "Mango Shake", price: 109 }
+    ]},
+    { name: "COLD COFFEE", img: "Coldoffee.png", items: [
+      { name: "Classic Cold Coffee", price: 69 }, { name: "Hazelnut Cold Coffee", price: 99 }, { name: "Caramel Cold Coffee", price: 99 }
+    ]},
+    { name: "HOT BEVERAGES", img: "https://placehold.co/400x400/png?text=Tea+Coffee", items: [
+      { name: "Regular Chai", price: 30 }, { name: "Masala Chai", price: 30 }, { name: "Elaichi Chai", price: 30 },
+      { name: "Adrak Wali Chai", price: 30 }, { name: "Tandoori Chai", price: 30 },
+      { name: "Cappuccino Coffee", price: 40 }, { name: "Mocha Coffee", price: 40 }, { name: "Vanilla Coffee", price: 40 }
+    ]},
+    { name: "CLASSIC MOMOS", img: "Momos.png", items: [
+      { name: "Veg Momo", price: 75 }, { name: "Veg Peri Peri Momo", price: 95 }, { name: "Veg Cheese Momo", price: 115 },
+      { name: "Paneer Achari Momo", price: 115 }, { name: "Paneer Peri Peri Momo", price: 115 }
+    ]},
+    { name: "PAHADI SOUP MOMO (JHOL)", img: "Jhol.png", items: [
+      { name: "Veg Jhol Momo", price: 130 }, { name: "Veg Paneer Jhol Momo", price: 150 }
+    ]},
+    { name: "TANDOORI BHATTI SE", img: "https://placehold.co/400x400/png?text=Tandoori", items: [
+      { name: "Creamy Veg Tandoori Momo", price: 139 }, { name: "Creamy Paneer Tandoori Momo", price: 159 }
+    ]},
+    { name: "SIZZLER & FRIES", img: "Sizzler.png", items: [
+      { name: "Veg Sizzler with Noodles", price: 259 }, { name: "Salted Fries (Large)", price: 89 },
+      { name: "Peri Peri Fries (Large)", price: 109 }, { name: "Cheese Fries (Large)", price: 139 }
+    ]},
+    { name: "SANDWICH & BURGER", img: "Sandwich.png", items: [
+      { name: "Grilled Spinach and Corn Sandwich", price: 90 }, { name: "Paneer Tikka Sandwich", price: 135 },
+      { name: "Veg Burger", price: 69 }, { name: "Peri Peri Burger", price: 85 }
+    ]},
+    { name: "PIZZA", img: "pizza.png", items: [
+      { name: "Onion Capsicum Corn Pizza", price: 175 }, { name: "Farmhouse Pizza", price: 175 },
+      { name: "Paneer Tandoori Pizza", price: 185 }, { name: "Paneer Barebeque Pizza", price: 185 }
+    ]},
+    { name: "SPRING ROLLS", img: "Rolls.png", items: [
+      { name: "Veg Cigar Rolls (4 Pcs)", price: 75 }, { name: "Veg Rolls (2 Pcs / 8 Small Pcs)", price: 105 },
+      { name: "Paneer Rolls (2 Pcs / 8 Small Pcs)", price: 155 }
+    ]},
+    { name: "PASTA", img: "https://placehold.co/400x400/png?text=Pasta", items: [
+      { name: "Red Sauce Pasta", price: 150 }, { name: "White Sauce Pasta", price: 155 }, { name: "Add Cheese (Extra)", price: 30 }
+    ]},
+    { name: "PAV BHAJI", img: "https://placehold.co/400x400/png?text=Pav+Bhaji", items: [
+      { name: "Bhaji With 2 Butter Pav", price: 150 }, { name: "Butter Bhaji With 2 Butter Pav", price: 155 },
+      { name: "Extra Pav (2 Pcs)", price: 15 }
+    ]},
+    { name: "KOREAN RAMEN", img: "https://placehold.co/400x400/png?text=Ramen", items: [
+      { name: "Koreans Spicy Veg Ramen", price: 169 }, { name: "Korean Cheese Ramen", price: 189 },
+      { name: "Korean Kimchi Ramen", price: 169 }
+    ]},
+    { name: "KOREAN CORN DOG", img: "https://placehold.co/400x400/png?text=CornDog", items: [
+      { name: "Chilli Garlic Corn Dog", price: 159 }, { name: "Peri Peri Corn Dog", price: 159 },
+      { name: "Tandoori Corn Dog", price: 159 }, { name: "Barbeque Corn Dog", price: 159 }
+    ]},
+    { name: "CHOLE-BHATURE & PARATHA", img: "https://placehold.co/400x400/png?text=Chole", items: [
+      { name: "Bhatura 2 Pcs with Pindi Chole", price: 175 },
+      { name: "Laccha Paratha With 4 Pcs Veg Shammi Kebab", price: 205 },
+      { name: "Laccha Paratha With Lucknawi Veg Galouti", price: 190 },
+      { name: "Laccha Paratha With Dal Makhani", price: 200 },
+      { name: "Laccha Paratha With Soya Keema Matar", price: 190 }
+    ]},
+    { name: "IDLI & MEDU VADA", img: "https://placehold.co/400x400/png?text=Idli", items: [
+      { name: "Idli 2 Pcs With Sambhar", price: 85 }, { name: "Idli & Wada 1 Pcs Each With Sambhar", price: 105 },
+      { name: "Medu Wada 2 Pcs With Sambhar", price: 120 }
+    ]},
+    { name: "FRIED RICE, MANCHURIAN", img: "https://placehold.co/400x400/png?text=FriedRice", items: [
+      { name: "Fried Rice With Manchurian Ball", price: 195 }, { name: "Plain Rice Bowl With Chole Masala", price: 170 },
+      { name: "Plain Rice Bowl With Rajma", price: 180 }, { name: "Plain Rice Bowl With Dal Makhani", price: 199 }
+    ]},
+    { name: "BIRYANI", img: "https://placehold.co/400x400/png?text=Biryani", items: [
+      { name: "Veg Biryani", price: 175 }, { name: "Paneer Biryani", price: 275 }
+    ]},
+    { name: "KEBAB", img: "https://placehold.co/400x400/png?text=Kebab", items: [
+      { name: "Veg Shammi Kebab (4 PCS)", price: 120 }, { name: "Veg Lucknawi Galouti (4 Pcs)", price: 120 },
+      { name: "Veg Harabhara Kebab (4 Pcs)", price: 135 }
+    ]},
+    { name: "WAFFLE & DESSERTS", img: "https://placehold.co/400x400/png?text=Waffle", items: [
+      { name: "Dark Chocolate Waffle", price: 139 }, { name: "Oreo Waffle", price: 149 },
+      { name: "Dark And White Waffle", price: 159 }, { name: "Chocolate Brownies", price: 79 },
+      { name: "Sizzling Brownies With Ice Cream", price: 139 }
+    ]},
+    { name: "SWEETY SWEET", img: "https://placehold.co/400x400/png?text=Sweets", items: [
+      { name: "Gulab Jamun (2 Pcs)", price: 55 }, { name: "Ras Malai (1 Pcs)", price: 65 },
+      { name: "Moon Dal Halwa", price: 95 }, { name: "Moong Dal Halwa Sizzler", price: 115 }
+    ]},
+    { name: "BUBBLE TEA", img: "https://placehold.co/400x400/png?text=BubbleTea", items: [
+      { name: "Strawberry Blush", price: 149 }, { name: "Blue Citrus", price: 149 },
+      { name: "Mango Passion", price: 149 }, { name: "Lychee Lush", price: 149 }
+    ]}
+  ];
+
+  // Render main menu
+  const container = document.getElementById('fullMenuContainer');
+  function renderMenu() {
+    let html = '';
+    menuData.forEach((cat, idx) => {
+      html += `<div id="cat_${idx}" class="category-card">`;
+      html += `<div class="cat-head">${cat.name} <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span></div>`;
+      html += `<div class="cat-body">`;
+      html += `<div class="cat-img-place"><img src="${cat.img}" alt="${cat.name}"></div>`;
+      html += `<div class="menu-list">`;
+      cat.items.forEach(item => {
+        html += `
+          <div class="menu-item-row">
+            <div class="item-info">
+              <div class="item-name">${item.name}</div>
             </div>
-            <div class="hidden md:flex gap-7 font-medium text-gray-700">
-                <a href="#" class="hover:text-[#f97c2c] transition duration-300">Home</a>
-                <a href="#products" class="hover:text-[#f97c2c] transition duration-300">Food</a>
-                <a href="#accessories" class="hover:text-[#f97c2c] transition duration-300">Accessories</a>
-                <a href="#contact" class="hover:text-[#f97c2c] transition duration-300">Contact</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <i class="fa-regular fa-heart text-xl text-gray-600 cursor-pointer hover:text-[#f97c2c] transition duration-300 hover:scale-110" id="wishlistIcon"></i>
-            </div>
+            <div class="item-price">₹${item.price}</div>
+            <button class="add-btn" data-name="${item.name.replace(/"/g, '&quot;')}" data-price="${item.price}">➕ Add</button>
+          </div>
+        `;
+      });
+      html += `</div></div></div>`;
+    });
+    container.innerHTML = html;
+  }
+  renderMenu();
+
+  // Cart state
+  let orderItems = [];
+  let nextId = 1;
+
+  function addOrIncrementItem(name, price) {
+    const existing = orderItems.find(i => i.name === name && i.price === price);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      orderItems.push({ id: nextId++, name, price, quantity: 1 });
+    }
+    updateOrderUI();
+  }
+
+  function incrementItem(id) {
+    const idx = orderItems.findIndex(i => i.id === id);
+    if (idx !== -1) {
+      orderItems[idx].quantity += 1;
+      updateOrderUI();
+    }
+  }
+
+  function decrementItem(id) {
+    const idx = orderItems.findIndex(i => i.id === id);
+    if (idx !== -1) {
+      if (orderItems[idx].quantity > 1) {
+        orderItems[idx].quantity -= 1;
+      } else {
+        orderItems.splice(idx, 1);
+      }
+      updateOrderUI();
+    }
+  }
+
+  function updateOrderUI() {
+    const orderListDiv = document.getElementById('orderList');
+    const totalSpan = document.getElementById('totalAmount');
+    if (orderItems.length === 0) {
+      orderListDiv.innerHTML = '<div class="text-muted">No items added yet</div>';
+      totalSpan.innerText = '₹0';
+      return;
+    }
+    let listHtml = '';
+    let grandTotal = 0;
+    orderItems.forEach(item => {
+      const lineTotal = item.price * item.quantity;
+      grandTotal += lineTotal;
+      listHtml += `
+        <div class="order-item" data-id="${item.id}">
+          <div class="order-item-details">${item.name} (₹${item.price} each)</div>
+          <div class="order-item-controls">
+            <button class="qty-btn dec-btn" data-id="${item.id}">−</button>
+            <span class="item-quantity">${item.quantity}</span>
+            <button class="qty-btn inc-btn" data-id="${item.id}">+</button>
+            <span style="margin-left: 8px; font-weight:bold; color:#E6B422;">₹${lineTotal}</span>
+          </div>
         </div>
-    </div>
+      `;
+    });
+    orderListDiv.innerHTML = listHtml;
+    totalSpan.innerText = `₹${grandTotal}`;
 
-    <!-- Floating WhatsApp Button with pulse animation -->
-    <div class="fixed bottom-8 right-6 z-50 bg-green-500 w-14 h-14 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition duration-300 hover:scale-110 hover:shadow-green-300/50" id="whatsappBtn" style="animation: gentlePulse 2s infinite;">
-        <i class="fab fa-whatsapp text-white text-3xl"></i>
-    </div>
+    document.querySelectorAll('.dec-btn').forEach(btn => {
+      btn.removeEventListener('click', decHandler);
+      btn.addEventListener('click', decHandler);
+    });
+    document.querySelectorAll('.inc-btn').forEach(btn => {
+      btn.removeEventListener('click', incHandler);
+      btn.addEventListener('click', incHandler);
+    });
+    function decHandler(e) { decrementItem(parseInt(this.getAttribute('data-id'))); }
+    function incHandler(e) { incrementItem(parseInt(this.getAttribute('data-id'))); }
+  }
 
-    <main class="pt-20 overflow-x-hidden">
-        <!-- ========== HERO SECTION ========== -->
-        <section class="relative max-w-7xl mx-auto px-5 md:px-8 py-8 md:py-16 reveal">
-            <div class="absolute -top-12 -left-8 opacity-30 floating-paw"><i class="fas fa-paw text-7xl text-[#f97c2c]"></i></div>
-            <div class="absolute bottom-10 right-10 floating-paw opacity-20" style="animation-delay: 1.5s;"><i class="fas fa-paw text-6xl text-[#f97c2c]"></i></div>
-            <div class="absolute right-4 top-10 hidden lg:block opacity-70 floating-paw" style="animation-duration: 5s;">
-                <div class="relative"><i class="fas fa-motorcycle text-6xl text-[#f97c2c] drop-shadow-lg"></i><div class="absolute -bottom-2 -right-5 bg-white rounded-full p-1 shadow"><i class="fas fa-box-open text-[#2c2c2c] text-lg"></i></div></div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6 animate-fade-up" style="animation-delay: 0.1s;">
-                    <div class="bg-[#ffedd5] inline-block px-4 py-1 rounded-full text-[#f97c2c] font-semibold text-sm"><i class="fas fa-star-of-life text-xs"></i> Premium Pet Nutrition & Style</div>
-                    <h1 class="text-5xl md:text-6xl font-black leading-tight text-[#2c2c2c]">Your Premium <span class="text-[#f97c2c]">Pet Food &</span> Accessories</h1>
-                    <p class="text-gray-600 text-lg">Luxurious e‑commerce for happy pets — finest quality food, toys, beds & more.</p>
-                    <div class="relative max-w-md">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="globalSearch" placeholder="Search for dog food, grain-free, cat bed, toys..." class="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f97c2c] transition-all">
-                    </div>
-                    <div class="flex flex-wrap gap-4 pt-2">
-                        <button class="btn-orange px-8 py-3 rounded-full text-white font-bold shadow-lg" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now <i class="fas fa-arrow-right ml-2"></i></button>
-                        <button class="border-2 border-[#f97c2c] text-[#f97c2c] bg-white px-8 py-3 rounded-full font-bold hover:bg-[#f97c2c] hover:text-white transition duration-300" onclick="document.getElementById('accessories').scrollIntoView({behavior:'smooth'})">Explore Accessories <i class="fas fa-gift ml-2"></i></button>
-                    </div>
-                </div>
-                <div class="relative grid grid-cols-2 gap-4 animate-scale-in" style="animation-delay: 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&h=300&fit=crop" class="rounded-3xl shadow-xl object-cover w-full h-64 hover:scale-105 transition duration-500" alt="happy dog">
-                    <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=300&h=300&fit=crop" class="rounded-3xl shadow-xl object-cover w-full h-64 mt-8 hover:scale-105 transition duration-500" alt="happy cat">
-                </div>
-            </div>
-        </section>
+  function attachAddListeners() {
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.removeEventListener('click', addHandler);
+      btn.addEventListener('click', addHandler);
+    });
+    function addHandler(e) {
+      const name = this.getAttribute('data-name');
+      const price = parseInt(this.getAttribute('data-price'));
+      addOrIncrementItem(name, price);
+    }
+  }
 
-        <!-- ========== CATEGORIES ========== -->
-        <section class="max-w-7xl mx-auto px-5 py-12 reveal">
-            <div class="text-center mb-10"><h2 class="text-3xl font-bold">Shop by <span class="text-[#f97c2c]">Category</span></h2><div class="w-20 h-1 bg-[#f97c2c] mx-auto mt-2 rounded-full animate-pulse"></div></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                <div class="category-card p-8 text-center hover:bg-orange-50 flex flex-col items-center gap-3 transition-all duration-300">
-                    <i class="fas fa-bowl-food text-5xl text-[#f97c2c] transition-all hover:scale-110"></i>
-                    <h3 class="text-2xl font-bold">Pet Food</h3>
-                    <p class="text-gray-500">Premium nutritious recipes for dogs, cats, birds, fish & small pets.</p>
-                    <span class="text-sm bg-gray-100 px-4 py-1 rounded-full">30+ varieties</span>
-                </div>
-                <div class="category-card p-8 text-center hover:bg-orange-50 flex flex-col items-center gap-3 transition-all duration-300">
-                    <i class="fas fa-paw text-5xl text-[#f97c2c] transition-all hover:scale-110"></i>
-                    <h3 class="text-2xl font-bold">Accessories</h3>
-                    <p class="text-gray-500">Toys, beds, leashes, bowls, grooming & travel gear.</p>
-                    <span class="text-sm bg-gray-100 px-4 py-1 rounded-full">New arrivals</span>
-                </div>
-            </div>
-        </section>
+  function initCollapse() {
+    const cards = document.querySelectorAll('.category-card');
+    cards.forEach(card => {
+      const heading = card.querySelector('.cat-head');
+      if (heading) {
+        heading.addEventListener('click', (e) => {
+          e.stopPropagation();
+          card.classList.toggle('collapsed');
+        });
+      }
+    });
+    const collapseBtn = document.getElementById('collapseAllBtn');
+    collapseBtn.addEventListener('click', () => {
+      const allCards = document.querySelectorAll('.category-card');
+      const anyExpanded = Array.from(allCards).some(c => !c.classList.contains('collapsed'));
+      allCards.forEach(c => {
+        if (anyExpanded) c.classList.add('collapsed');
+        else c.classList.remove('collapsed');
+      });
+      collapseBtn.innerHTML = anyExpanded ? '<i class="fas fa-expand-alt"></i> Expand All' : '<i class="fas fa-compress-alt"></i> Collapse All';
+    });
+  }
 
-        <!-- ========== PET FOOD PRODUCTS (many options) ========== -->
-        <section id="products" class="max-w-7xl mx-auto px-5 py-12 reveal">
-            <div class="flex justify-between items-center flex-wrap mb-6"><h2 class="text-3xl font-bold">Premium <span class="text-[#f97c2c]">Pet Food</span></h2><p class="text-gray-400">★ 10,000+ happy pets</p></div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" id="productGrid">
-                <!-- 12 product items with data-name -->
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Dog Food (Chicken & Rice)"><img src="https://images.unsplash.com/photo-1568009114765-3fda1e884a7f?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><div class="flex justify-between"><h3 class="font-bold text-sm">Dog Food (Chicken)</h3><i class="far fa-heart text-gray-400 wishlist-icon hover:text-red-400 cursor-pointer"></i></div><div class="flex gap-1 text-xs"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i></div><div class="mt-2"><span class="price">$15.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Cat Food (Salmon)"><img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Cat Food (Salmon)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$14.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Puppy Food (Lamb)"><img src="https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Puppy Food (Lamb)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$18.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Bird Food (Tropical Mix)"><img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Bird Food (Tropical)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$9.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Fish Food (Color Enhancer)"><img src="https://images.unsplash.com/photo-1524704654690-b56c05c78e5a?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Fish Food (Color+)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$7.49</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Grain-Free Dog Food"><img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Grain-Free Dog Food</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$21.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Senior Cat Food"><img src="https://images.unsplash.com/photo-1582691874102-182e197c9f4c?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Senior Cat Food</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i></div><div class="mt-2"><span class="price">$17.49</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Small Breed Dog Food"><img src="https://images.unsplash.com/photo-1567604758666-878b226c9a34?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Small Breed Kibble</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$19.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Rabbit Food (Fortified)"><img src="https://images.unsplash.com/photo-1535241749838-299277b6305f?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Rabbit Food (Fortified)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$8.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Hamster & Gerbil Food"><img src="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Hamster Food Mix</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star-half-alt rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$5.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Reptile Food (Crickets)"><img src="https://images.unsplash.com/photo-1558844284-351a3fcb7c56?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Reptile Food (Crickets)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="far fa-star"></i></div><div class="mt-2"><span class="price">$12.99</span></div></div></div>
-                <div class="product-card p-4 rounded-2xl hover-gentle-pulse" data-name="Wet Cat Food (Tuna)"><img src="https://images.unsplash.com/photo-1562690868-60bbe7293e94?w=200&h=200&fit=crop" class="rounded-xl h-36 w-full object-cover"><div class="mt-3"><h3 class="font-bold text-sm">Wet Cat Food (Tuna)</h3><div class="flex gap-1"><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i><i class="fas fa-star rating-star"></i></div><div class="mt-2"><span class="price">$2.49 (can)</span></div></div></div>
-            </div>
-        </section>
+  function buildWhatsAppMessage(tableNumber) {
+    if (orderItems.length === 0) return null;
+    let message = "🍽️ *ROWDY CAFE - ORDER* 🍽️";
+    message += ` *Table No. ${tableNumber}*`;
+    message += "🪑 ";
+    let grandTotal = 0;
+    orderItems.forEach((item, index) => {
+      const lineTotal = item.price * item.quantity;
+      grandTotal += lineTotal;
+      message += `${index+1}. ${item.name}`;
+      message += `   Qty: ${item.quantity} × ₹${item.price} = ₹${lineTotal}, `;
+      if (index < orderItems.length - 1) message += "";
+    });
+    message += "";
+    message += ` TOTAL = ₹${grandTotal}/.`;
+    message += "🙏 Thank you! 🔥";
+    return message;
+  }
 
- 
+  const RESTAURANT_PHONE = "916386042426";
+
+  const tableModal = new bootstrap.Modal(document.getElementById('tableModal'));
+  const whatsappBtn = document.getElementById('whatsappOrderBtn');
+  const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+
+  whatsappBtn.addEventListener('click', () => {
+    if (orderItems.length === 0) {
+      alert("Please add at least one item to your order.");
+      return;
+    }
+    const selectEl = document.getElementById('tableNumberSelect');
+    selectEl.value = "";
+    tableModal.show();
+  });
+
+  confirmOrderBtn.addEventListener('click', () => {
+    const selectEl = document.getElementById('tableNumberSelect');
+    const tableValue = selectEl.value;
+    if (!tableValue || tableValue === "") {
+      alert("Please select a table number (1 to 10).");
+      return;
+    }
+    const msg = buildWhatsAppMessage(tableValue);
+    if (!msg) return;
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/${RESTAURANT_PHONE}?text=${encoded}`, '_blank');
+    tableModal.hide();
+  });
+
+  setTimeout(() => {
+    attachAddListeners();
+    initCollapse();
+    updateOrderUI();
+  }, 50);
+</script>
+</body>
+</html>
